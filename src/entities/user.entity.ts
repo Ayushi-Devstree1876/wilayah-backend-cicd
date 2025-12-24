@@ -1,4 +1,4 @@
-import { Verification_Status } from "../helper/constant";
+import { Verification_Status } from "../utils/constant";
 import {
   Entity,
   PrimaryGeneratedColumn,

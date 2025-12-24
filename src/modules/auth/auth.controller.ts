@@ -9,14 +9,11 @@ import {
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "./dto/login.dto";
-import { GetUser } from "src/utils/decorators/get-user.decorators";
-import { Action } from "src/utils/decorators/action.decorator";
-import { RolesGuard } from "src/utils/guard/role.guard";
-import { Action_Type, UserRole } from "src/helper/constant";
-import { Roles } from "src/utils/decorators/roles.decorators";
+import { Action_Type, UserRole } from "src/utils/constant";
 import { ProxyLoginDto } from "./dto/proxy_login.dto";
 import { logger } from "src/logger/winston.logger";
-import { JwtAuthGuard } from "src/utils/guard/jwt.guard";
+import { JwtAuthGuard } from "src/guard/jwt.guard";
+import { GetUser } from "src/decorators/get-user.decorators";
 
 @Controller("auth")
 export class AuthController {

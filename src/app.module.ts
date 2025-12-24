@@ -3,12 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { EjsAdapter } from "@nestjs-modules/mailer/dist/adapters/ejs.adapter";
-import { SeedModule } from "./seeds/seeds.module";
 import { ScheduleModule } from "@nestjs/schedule";
-import { AuditLog } from "./auditlog/audit-log.entity";
-import { AuditLogService } from "./auditlog/audit-log.service";
 import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
-import { AuditLogInterceptor } from "./interceptors/audit-log.interceptor";
 import { CustomExceptionFilter } from "./interceptors/exceptions.filter";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/user/user.module";
@@ -51,18 +47,11 @@ const env = process.env;
     ConfigModule.forRoot({
       isGlobal: true, // Makes the config globally available
     }),
-    TypeOrmModule.forFeature([AuditLog]),
     ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
-    SeedModule,
   ],
   providers: [
-    AuditLogService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: AuditLogInterceptor,
-    },
     {
       provide: APP_FILTER,
       useClass: CustomExceptionFilter,

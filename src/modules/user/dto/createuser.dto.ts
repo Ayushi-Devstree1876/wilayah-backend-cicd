@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEmail, IsOptional } from "class-validator";
-import { UserRole } from "src/helper/constant";
+import { UserRole } from "src/utils/constant";
 
 export class CreateUserDto {
   @IsNotEmpty()

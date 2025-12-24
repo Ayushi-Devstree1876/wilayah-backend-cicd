@@ -22,7 +22,7 @@ import {
   generateRandomToken,
   salting_rounds,
   UserRole,
-} from "../../helper/constant";
+} from "../../utils/constant";
 import { MailerService } from "@nestjs-modules/mailer";
 import { User } from "src/entities/user.entity";
 

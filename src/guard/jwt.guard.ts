@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { TokenExpiredError, JsonWebTokenError } from "@nestjs/jwt";
 import { AuthGuard } from "@nestjs/passport";
-import { TOKEN_INVALID_EXPIRED, TOKEN_NOT_PROVIDED } from "../message";
+import { TOKEN_INVALID_EXPIRED, TOKEN_NOT_PROVIDED } from "../utils/message";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
