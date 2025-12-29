@@ -8,6 +8,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { CustomExceptionFilter } from "./interceptors/exceptions.filter";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/user/user.module";
+import { WisdomModule } from "./modules/wisdom/wisdom.module";
 
 const env = process.env;
 
@@ -50,6 +51,7 @@ const env = process.env;
     ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
+    WisdomModule,
   ],
   providers: [
     {
