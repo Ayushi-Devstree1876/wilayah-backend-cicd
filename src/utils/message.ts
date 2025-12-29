@@ -11,6 +11,12 @@ export const INTERNAL_SERVER_ERROR = "Internal server error";
 
 export const WISDOM_ADD_SUCCESS = "Wisdom added successfully.";
 
+export const EVENT_ADD_SUCCESS = "Event added successfully";
+export const EVENT_LIST_GET_SUCCESS = "Events fetched successfully";
+export const EVENT_UPDATE_SUCCESS = "Events updated successfully";
+export const EVENT_NOT_EXISTS = "Events not exists";
+export const EVENT_DELETE_SUCCESS = "Events deleted successfully";
+
 export const PASSWORD_RESET = "Password reset successfully";
 export const TOKEN_INVALID_EXPIRED = "Token is invalid or expired";
 export const USER_NOT_FOUND = "User not found";

@@ -9,6 +9,7 @@ import { CustomExceptionFilter } from "./interceptors/exceptions.filter";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/user/user.module";
 import { WisdomModule } from "./modules/wisdom/wisdom.module";
+import { EventsModule } from "./modules/events/events.module";
 
 const env = process.env;
 
@@ -52,6 +53,7 @@ const env = process.env;
     AuthModule,
     UsersModule,
     WisdomModule,
+    EventsModule,
   ],
   providers: [
     {
