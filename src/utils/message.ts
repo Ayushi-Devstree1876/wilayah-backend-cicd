@@ -10,6 +10,11 @@ export const CHANGE_PASSWORD_FAILED =
 export const INTERNAL_SERVER_ERROR = "Internal server error";
 
 export const WISDOM_ADD_SUCCESS = "Wisdom added successfully.";
+export const WISDOM_LIST_SUCCESS = "Wisdom list retrieved successfully";
+export const WISDOM_GET_SUCCESS = "Wisdom retrieved successfully";
+export const WISDOM_UPDATE_SUCCESS = "Wisdom updated successfully";
+export const WISDOM_DELETE_SUCCESS = "Wisdom deleted successfully";
+export const WISDOM_NOT_FOUND = "Wisdom not found";
 
 export const PASSWORD_RESET = "Password reset successfully";
 export const TOKEN_INVALID_EXPIRED = "Token is invalid or expired";

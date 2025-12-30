@@ -1,10 +1,5 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
+  Controller, Get, Post, Body, Patch, Param,
   Delete,
   UseGuards,
   HttpStatus,
@@ -19,14 +14,16 @@ import { JwtAuthGuard } from "src/guard/jwt.guard";
 import { UserRole } from "src/utils/constant";
 import { Roles } from "src/decorators/roles.decorators";
 import { logger } from "src/logger/winston.logger";
-import { WISDOM_ADD_SUCCESS } from "src/utils/message";
+import {
+  WISDOM_ADD_SUCCESS, WISDOM_LIST_SUCCESS, WISDOM_GET_SUCCESS, WISDOM_UPDATE_SUCCESS, WISDOM_DELETE_SUCCESS,
+} from "src/utils/message";
 
 @Controller("wisdom")
 export class WisdomController {
-  constructor(private readonly wisdomService: WisdomService) {}
+  constructor(private readonly wisdomService: WisdomService) { }
 
-//  @UseGuards(JwtAuthGuard, RolesGuard)
-//  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
   @Post("add")
   async addWisdom(@Body() createWisdomDto: CreateWisdomDto) {
     try {
@@ -42,17 +39,23 @@ export class WisdomController {
     }
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
   @Get("list")
   async findAll(
     @Query("page") page = 1,
     @Query("limit") limit = 10,
-    @Query("search") search?: string
+    @Query("pagination") pagination?: string
   ) {
     try {
-      const result = await this.wisdomService.findAll(Number(page), Number(limit), search);
+      const result = await this.wisdomService.wisdomList(
+        Number(page),
+        Number(limit),
+        pagination
+      );
       return {
         statusCode: HttpStatus.OK,
-        message: "Wisdom list retrieved successfully",
+        message: WISDOM_LIST_SUCCESS,
         data: result,
       };
     } catch (error) {
@@ -61,13 +64,15 @@ export class WisdomController {
     }
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
   @Get(":id")
   async findOne(@Param("id", new ParseUUIDPipe()) id: string) {
     try {
       const wisdom = await this.wisdomService.findOne(id);
       return {
         statusCode: HttpStatus.OK,
-        message: "Wisdom retrieved successfully",
+        message: WISDOM_GET_SUCCESS,
         data: wisdom,
       };
     } catch (error) {
@@ -76,17 +81,19 @@ export class WisdomController {
     }
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
   @Patch(":id")
   async update(
     @Param("id", new ParseUUIDPipe()) id: string,
     @Body() updateWisdomDto: UpdateWisdomDto
   ) {
     try {
-      const updated = await this.wisdomService.updateWisdom(id, updateWisdomDto);
+      await this.wisdomService.updateWisdom(id, updateWisdomDto);
       return {
         statusCode: HttpStatus.OK,
-        message: "Wisdom updated successfully",
-        data: updated,
+        message: WISDOM_UPDATE_SUCCESS,
+        data: [],
       };
     } catch (error) {
       logger.error(error);
@@ -94,13 +101,15 @@ export class WisdomController {
     }
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.HOSPITAL_ADMINISTRATOR)
   @Delete(":id")
   async remove(@Param("id", new ParseUUIDPipe()) id: string) {
     try {
       await this.wisdomService.deleteWisdom(id);
       return {
         statusCode: HttpStatus.OK,
-        message: "Wisdom deleted successfully",
+        message: WISDOM_DELETE_SUCCESS,
         data: [],
       };
     } catch (error) {
@@ -109,4 +118,3 @@ export class WisdomController {
     }
   }
 }
-
