@@ -1,28 +1,35 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
-import { MailerModule } from "@nestjs-modules/mailer";
-import { EjsAdapter } from "@nestjs-modules/mailer/dist/adapters/ejs.adapter";
-import { ScheduleModule } from "@nestjs/schedule";
-import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
-import { CustomExceptionFilter } from "./interceptors/exceptions.filter";
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+
+import { APP_FILTER } from '@nestjs/core';
+//import { CustomExceptionFilter } from './filters/custom-exception.filter';
+
 import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/user/user.module";
 import { WisdomModule } from "./modules/wisdom/wisdom.module";
 import { EventsModule } from "./modules/events/events.module";
 
-const env = process.env;
-
 @Module({
   imports: [
+
+    // ✅ MUST BE FIRST (Loads .env)
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
+    // ✅ MAIL CONFIG
     MailerModule.forRoot({
       transport: {
-        host: env.SMTP_HOST,
-        port: parseInt(env.SMTP_PORT),
-        secure: JSON.parse(env.SMTP_SECURE), // true for 465, false for other ports
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        secure: JSON.parse(process.env.SMTP_SECURE || "false"),
         auth: {
-          user: env.EMAIL_USER,
-          pass: env.EMAIL_PASSWORD,
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
         },
       },
       defaults: {
@@ -30,36 +37,38 @@ const env = process.env;
       },
       template: {
         dir: process.cwd() + "/src/templates/",
-        adapter: new EjsAdapter(), // Use EJS adapter
+        adapter: new EjsAdapter(),
         options: {
           strict: false,
         },
       },
     }),
+
+    // ✅ DATABASE CONNECTION
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: env.DB_HOST,
-      port: parseInt(env.DB_PORT),
-      username: env.DB_USERNAME,
-      password: env.DB_PASSWORD,
-      database: env.DB_NAME,
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT || "5432"),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [__dirname + "/entities/*.entity{.ts,.js}"],
-      synchronize: true, // set to false in production
+      synchronize: true,
     }),
-    ConfigModule.forRoot({
-      isGlobal: true, // Makes the config globally available
-    }),
+
     ScheduleModule.forRoot(),
+
     AuthModule,
     UsersModule,
     WisdomModule,
     EventsModule,
   ],
+
   providers: [
-    {
-      provide: APP_FILTER,
-      useClass: CustomExceptionFilter,
-    },
+  //  {
+  //    provide: APP_FILTER,
+  //  useClass: CustomExceptionFilter,
+  //  },
   ],
 })
 export class AppModule {}
